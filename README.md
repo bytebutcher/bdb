@@ -46,7 +46,7 @@ brb() {
 export -f brb > /dev/null
 ```
 
-In addition you need to add ``´brb``` to your PATH. This can be done by adding following line to the end of ```.bashrc```.
+In addition you need to add ```brb``` to your PATH. This can be done by adding following line to the end of ```.bashrc```.
 
 ```
 export PATH="/path/to/brb/:${PATH}"
