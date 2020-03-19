@@ -6,11 +6,15 @@ brb - be right bash - yet another bash directory bookmark script
 ```
 # Search and select bookmark (interactive fuzzy search)
 brb
+# Select bookmark by index
+brb 1
 # Add the current working directory as bookmark
 brb -a
 # Remove the current working directory from your bookmarks
 brb -r
-# List all bookmarks
+# Remove the directory from your bookmarks by index
+brb -r 1
+# List all bookmarks (including indices)
 brb -l
 ```
 
