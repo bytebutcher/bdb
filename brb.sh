@@ -35,7 +35,7 @@ function resolve_dir() {
 }
 
 function add_bookmark() {
-	if ! grep "^${1}\$" "${BOOKMARK_FILE}" ; then
+	if ! [ -f "${BOOKMARK_FILE}" ] || ! grep "^${1}\$" "${BOOKMARK_FILE}" ; then
 		echo "$1" | tee -a "${BOOKMARK_FILE}"
 	fi
 }
