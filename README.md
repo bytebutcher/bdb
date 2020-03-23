@@ -10,6 +10,8 @@ brb
 brb 1
 # Add the current working directory as bookmark
 brb -a
+# Add the specified directory as bookmark
+brb -a /some/path/
 # Remove the current working directory from your bookmarks
 brb -r
 # Remove the directory from your bookmarks by index

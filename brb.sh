@@ -9,7 +9,7 @@
 # ##################################################
 
 function usage() {
-	echo "usage: $(basename $0) [-a] [-r] [-l]>"	>&2
+	echo "usage: $(basename ${0}) [-a] [-r] [-l]>"	>&2
 	echo "  -a  add current dir to bookmarks" 	>&2
 	echo "  -r  remove current dir from bookmarks"	>&2
 	echo "  -l  list bookmarks"			>&2
@@ -30,13 +30,14 @@ function is_integer() {
 }
 
 function resolve_dir() {
-	cd "$1" 2>/dev/null || return $?  
+	cd "${1}" 2>/dev/null || return ${?}  
 	echo "`pwd -P`" 
 }
 
 function add_bookmark() {
 	if ! [ -f "${BOOKMARK_FILE}" ] || ! grep "^${1}\$" "${BOOKMARK_FILE}" ; then
-		echo "$1" | tee -a "${BOOKMARK_FILE}"
+		echo "${1}" >> "${BOOKMARK_FILE}"
+		echo "Added ${1}"
 	fi
 }
 
@@ -55,14 +56,7 @@ function remove_bookmark() {
 		local tmp_file=$(mktemp)
 		grep -v "^${1}\$" <"${BOOKMARK_FILE}" >"${tmp_file}"
 		mv "${tmp_file}" "${BOOKMARK_FILE}"
-		echo "${1}"
-	fi
-}
-
-function remove_bookmark_by_index() {
-	if [ -f "${BOOKMARK_FILE}" ] ; then
-		local index="${1}"
-		remove_bookmark $(get_bookmark_by_index ${index})
+		echo "Removed ${1}"
 	fi
 }
 
@@ -94,16 +88,20 @@ fi
 
 case $1 in
 	-a | --add)
-		add_bookmark "${CURRENT_PATH}"
+		path="${2}"
+		if [ -z "${path}" ] ; then
+			path="${CURRENT_PATH}"
+		fi
+		add_bookmark "${path}"
 		exit 0
 		;;
 	-r | --remove)
-		index="$2"
-		if [ -z "${index}" ] ; then
-			remove_bookmark "${CURRENT_PATH}"
-		else
-			remove_bookmark_by_index "${index}"
+		index="${2}"
+		path="${CURRENT_PATH}"
+		if [ -n "${index}" ] ; then
+			path=$(get_bookmark_by_index "${index}")
 		fi
+		remove_bookmark "${path}"
 		exit 0
 		;;
 	-l | --list)
