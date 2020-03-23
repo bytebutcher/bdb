@@ -40,9 +40,9 @@ Since the ```cd``` operation cannot be implemented in standalone script we need 
 # ------------------
 unalias brb 2> /dev/null
 brb() {
-   if [ $# -eq 0 ] ; then
-      local bookmark_location="$(brb.sh)"
-      if [[ "${bookmark_location}" != '' ]]; then
+   if [ $# -eq 0 ] || [[ ${1} =~ ^[0-9]+$ ]]  ; then
+      local bookmark_location="$(brb.sh ${1})"
+      if [[ "${bookmark_location}" != '' ]] ; then
          cd "${bookmark_location}"
       fi
    else
