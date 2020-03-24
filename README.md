@@ -31,29 +31,8 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ```
 Check out the [documentation of fzf](https://github.com/junegunn/fzf) for more information.
 
-### .bashrc
-
-Since the ```cd``` operation cannot be implemented in standalone script we need to define a shell function inside ```.bashrc```.
+### brb
 
 ```
-# Setup brb function
-# ------------------
-unalias brb 2> /dev/null
-brb() {
-   if [ $# -eq 0 ] || [[ ${1} =~ ^[0-9]+$ ]]  ; then
-      local bookmark_location="$(brb.sh ${1})"
-      if [[ "${bookmark_location}" != '' ]] ; then
-         cd "${bookmark_location}"
-      fi
-   else
-      brb.sh $@
-   fi
-}
-export -f brb > /dev/null
-```
-
-In addition you need to add ```brb``` to your PATH. This can be done by adding following line to the end of ```.bashrc```.
-
-```
-export PATH="/path/to/brb/:${PATH}"
+bash <(curl -s https://github.com/bytebutcher/brb/install)
 ```

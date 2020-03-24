@@ -1,0 +1,40 @@
+#!/bin/bash
+if ! [ -d ~/.brb/ ] ; then
+	git clone https://github.com/bytebutcher/brb ~/.brb/
+fi
+
+if ! [ -f ~/.brb/brb.sh ] ; then
+	echo "ERROR: Installation of brb failed!" >&2
+	exit 1
+fi
+
+cat <<EOF > ~/.brb.bash
+unalias brb 2> /dev/null
+brb() {
+   if [ \$# -eq 0 ] || [[ \${1} =~ ^[0-9]+$ ]]  ; then
+      local bookmark_location="\$(brb.sh \${1})"
+      if [[ "\${bookmark_location}" != '' ]] ; then
+         cd "\${bookmark_location}"
+      fi
+   else
+      brb.sh \$@
+   fi
+}
+export -f brb > /dev/null
+export PATH=~/.brb/:\${PATH}
+EOF
+
+if ! [ -f ~/.brb.bash ] ; then
+	echo "ERROR: Installation of brb failed!" >&2
+	exit 1
+fi
+
+result="$(grep "[ -f ~/.brb.bash ] && source ~/.brb.bash" ~/.bashrc)"
+if [ -z "${result}" ]  ; then
+	echo "[ -f ~/.brb.bash ] && source ~/.brb.bash" >> ~/.bashrc
+fi
+
+echo "Finished. Restart your shell or reload config file."
+[[ "$shells" =~ bash ]] && echo "   source ~/.bashrc  # bash"
+#[[ "$shells" =~ zsh ]]  && echo "   source ${ZDOTDIR:-~}/.zshrc   # zsh"
+#[[ "$shells" =~ fish ]] && [ $key_bindings -eq 1 ] && echo "   fzf_key_bindings  # fish"
