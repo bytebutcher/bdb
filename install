@@ -11,13 +11,11 @@ fi
 cat <<EOF > ~/.bdb.bash
 unalias bdb 2> /dev/null
 bdb() {
-   if [ \$# -eq 0 ] || [[ \${1} =~ ^[0-9]+$ ]]  ; then
-      local bookmark_location="\$(bdb.sh \${1})"
-      if [[ "\${bookmark_location}" != '' ]] ; then
-         cd "\${bookmark_location}"
-      fi
-   else
-      bdb.sh \$@
+unalias bdb 2> /dev/null
+bdb() {
+   bookmark_location="\$(bdb.sh \$@)"
+   if [ \$? -eq 0 ] && [ -n "\${bookmark_location}" ] ; then
+      cd "\${bookmark_location}"
    fi
 }
 export -f bdb > /dev/null

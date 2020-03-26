@@ -77,16 +77,7 @@ if ! [ -d "${BOOKMARK_PATH}" ] ; then
 	mkdir "${BOOKMARK_PATH}"
 fi
 
-if [ $# -eq 0 ] ; then
-	if [ -f "${BOOKMARK_FILE}" ] ; then
-		cat "${BOOKMARK_FILE}" | fzf
-	else
-		echo "No bookmarks defined yet." >&2
-	fi
-	exit 0
-fi
-
-case $1 in
+case ${1} in
 	-a | --add)
 		path="${2}"
 		if [ -z "${path}" ] ; then
@@ -113,11 +104,24 @@ case $1 in
 		exit 0
 		;;
 	* )
-		if is_integer "${1}" ; then
+		if ! [ -f "${BOOKMARK_FILE}" ] ; then
+			echo "No bookmarks defined yet." >&2
+			exit 1
+		fi
+		if [ $# -eq 0 ] ; then
+			cat "${BOOKMARK_FILE}" | fzf
+		elif is_integer "${1}" ; then
 			index="${1}"
 			get_bookmark_by_index "${index}"
 		else
-			usage
-			exit 1
+			result=$(cat "${BOOKMARK_FILE}" | grep "${1}" | wc -l)
+			if [ ${result} -eq 0 ] ; then
+				echo "No matching bookmarks found." >&2
+				exit 1
+			elif [ ${result} -eq 1 ] ; then
+				cat "${BOOKMARK_FILE}" | grep "${1}"
+			else
+				cat "${BOOKMARK_FILE}" | grep "${1}" | fzf
+			fi
 		fi
 esac
