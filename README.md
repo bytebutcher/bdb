@@ -1,38 +1,35 @@
-# brb
-brb - be right bash - yet another bash directory bookmark script
+# bdb
+bdb - bash directory bookmarking
 
 ## Usage
 
 ```
 # Search and select bookmark (interactive fuzzy search)
-brb
+bdb
 # Select bookmark by index
-brb 1
+bdb 1
 # Add the current working directory as bookmark
-brb -a
+bdb -a
 # Add the specified directory as bookmark
-brb -a /some/path/
+bdb -a /some/path/
 # Remove the current working directory from your bookmarks
-brb -r
+bdb -r
 # Remove the directory from your bookmarks by index
-brb -r 1
+bdb -r 1
 # List all bookmarks (including indices)
-brb -l
+bdb -l
 ```
 
 ## Installation
 
-### fzf
+To install bdb just execute following command:
+```
+bash <(curl -s https://github.com/bytebutcher/bdb/install)
+```
 
-```brb``` requires ```fzf``` to work properly. 
+Since ```bdb``` requires ```fzf``` to work properly you also need to execute the following commands: 
 ```
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 ```
-Check out the [documentation of fzf](https://github.com/junegunn/fzf) for more information.
-
-### brb
-
-```
-bash <(curl -s https://github.com/bytebutcher/brb/install)
-```
+If you like to know more about ```fzf``` check out the [documentation of fzf](https://github.com/junegunn/fzf).

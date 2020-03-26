@@ -1,37 +1,37 @@
 #!/bin/bash
-if ! [ -d ~/.brb/ ] ; then
-	git clone https://github.com/bytebutcher/brb ~/.brb/
+if ! [ -d ~/.bdb/ ] ; then
+	git clone https://github.com/bytebutcher/bdb ~/.bdb/
 fi
 
-if ! [ -f ~/.brb/brb.sh ] ; then
-	echo "ERROR: Installation of brb failed!" >&2
+if ! [ -f ~/.bdb/bdb.sh ] ; then
+	echo "ERROR: Installation of bdb failed!" >&2
 	exit 1
 fi
 
-cat <<EOF > ~/.brb.bash
-unalias brb 2> /dev/null
-brb() {
+cat <<EOF > ~/.bdb.bash
+unalias bdb 2> /dev/null
+bdb() {
    if [ \$# -eq 0 ] || [[ \${1} =~ ^[0-9]+$ ]]  ; then
-      local bookmark_location="\$(brb.sh \${1})"
+      local bookmark_location="\$(bdb.sh \${1})"
       if [[ "\${bookmark_location}" != '' ]] ; then
          cd "\${bookmark_location}"
       fi
    else
-      brb.sh \$@
+      bdb.sh \$@
    fi
 }
-export -f brb > /dev/null
-export PATH=~/.brb/:\${PATH}
+export -f bdb > /dev/null
+export PATH=~/.bdb/:\${PATH}
 EOF
 
-if ! [ -f ~/.brb.bash ] ; then
-	echo "ERROR: Installation of brb failed!" >&2
+if ! [ -f ~/.bdb.bash ] ; then
+	echo "ERROR: Installation of bdb failed!" >&2
 	exit 1
 fi
 
-result="$(grep "[ -f ~/.brb.bash ] && source ~/.brb.bash" ~/.bashrc)"
+result="$(grep "[ -f ~/.bdb.bash ] && source ~/.bdb.bash" ~/.bashrc)"
 if [ -z "${result}" ]  ; then
-	echo "[ -f ~/.brb.bash ] && source ~/.brb.bash" >> ~/.bashrc
+	echo "[ -f ~/.bdb.bash ] && source ~/.bdb.bash" >> ~/.bashrc
 fi
 
 echo "Finished. Restart your shell or reload config file."
