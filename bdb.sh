@@ -35,10 +35,16 @@ function resolve_dir() {
 }
 
 function add_bookmark() {
-	if ! [ -f "${BOOKMARK_FILE}" ] || ! grep "^${1}\$" "${BOOKMARK_FILE}" ; then
-		echo "${1}" >> "${BOOKMARK_FILE}"
-		echo "Added ${1}"
+	if ! [ -d "${1}" ] ; then
+		echo "ERROR: Invalid bookmark location!" >&2
+		exit 1
 	fi
+	if [ grep "^${1}\$" "${BOOKMARK_FILE}" ] ; then
+		echo "Location '${1}' is already bookmarked." >&2
+		exit 0
+	fi
+	echo "${1}" >> "${BOOKMARK_FILE}"
+	echo "Added '${1}'" >&2
 }
 
 function get_bookmark_by_index() {
@@ -53,10 +59,18 @@ function get_bookmark_by_index() {
 
 function remove_bookmark() {
 	if [ -f "${BOOKMARK_FILE}" ] ; then
+		if ! [ grep "^${1}\$" "${BOOKMARK_FILE}" ] ; then
+			echo "No matching boomark found." >&2
+			exit 0
+		fi
 		local tmp_file=$(mktemp)
 		grep -v "^${1}\$" <"${BOOKMARK_FILE}" >"${tmp_file}"
 		mv "${tmp_file}" "${BOOKMARK_FILE}"
-		echo "Removed ${1}"
+		echo "Removed '${1}'" >&2
+		exit 0
+	else
+		echo "No bookmarks defined yet." >&2
+		exit 0
 	fi
 }
 
@@ -79,18 +93,20 @@ fi
 
 case ${1} in
 	-a | --add)
-		path="${2}"
 		if [ -z "${path}" ] ; then
 			path="${CURRENT_PATH}"
+		else
+			path="${2}"
 		fi
 		add_bookmark "${path}"
 		exit 0
 		;;
 	-r | --remove)
 		index="${2}"
-		path="${CURRENT_PATH}"
 		if [ -n "${index}" ] ; then
 			path=$(get_bookmark_by_index "${index}")
+		else
+			path="${CURRENT_PATH}"
 		fi
 		remove_bookmark "${path}"
 		exit 0
@@ -109,23 +125,30 @@ case ${1} in
 			exit 1
 		fi
 		if [ $# -eq 0 ] ; then
-			result=$(cat "${BOOKMARK_FILE}" | wc -l)
-			if [ ${result} -eq 1 ] ; then
+			num_bookmarks=$(cat "${BOOKMARK_FILE}" | wc -l)
+			if [ ${num_bookmarks} -eq 1 ] ; then
+				# Directly jump to bookmark when there is only one defined
 				cat "${BOOKMARK_FILE}"	
 			else
+				# Let user search bookmark file using fzf when there are 
+				# multiple bookmarks defined
 		       		cat "${BOOKMARK_FILE}" | fzf
 			fi
 		elif is_integer "${1}" ; then
 			index="${1}"
 			get_bookmark_by_index "${index}"
 		else
-			result=$(cat "${BOOKMARK_FILE}" | grep "${1}" | wc -l)
-			if [ ${result} -eq 0 ] ; then
+			num_matches=$(cat "${BOOKMARK_FILE}" | grep "${1}" | wc -l)
+			if [ ${num_matches} -eq 0 ] ; then
 				echo "No matching bookmarks found." >&2
 				exit 1
-			elif [ ${result} -eq 1 ] ; then
+			elif [ ${num_matches} -eq 1 ] ; then
+				# Directly jump to bookmark when there is only one matching 
+				# bookmark
 				cat "${BOOKMARK_FILE}" | grep "${1}"
 			else
+				# Let user search bookmark file using fzf when there are 
+				# multiple matching bookmarks
 				cat "${BOOKMARK_FILE}" | grep "${1}" | fzf
 			fi
 		fi
