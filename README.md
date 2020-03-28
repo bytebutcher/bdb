@@ -12,11 +12,11 @@ directory to the associated location. In addition bookmarks can be selected by i
 
 ```
 # Search and select bookmark using an interactive fuzzy search
-bdb
+$ bdb
 # Pre-filter bookmarks before showing an interactive fuzzy search
-bdb "filter string"
+$ bdb "filter string"
 # Select bookmark by index
-bdb 1
+$ bdb 1
 ```
 
 ### Adding bookmarks
@@ -56,7 +56,7 @@ $ bdb -l
 
 ## Installation
 
-To install bdb just execute following command:
+To install ```bdb``` just execute following command:
 ```
 bash <(curl -s https://github.com/bytebutcher/bdb/install)
 ```
