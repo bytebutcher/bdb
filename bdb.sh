@@ -8,12 +8,28 @@
 #   bytebutcher
 # ##################################################
 
-function usage() {
-	echo "usage: $(basename ${0}) [-a] [-r] [-l]>"	>&2
-	echo "  -a  add current dir to bookmarks" 	>&2
-	echo "  -r  remove current dir from bookmarks"	>&2
-	echo "  -l  list bookmarks"			>&2
-	echo "  -?  display help"			>&2
+function show_usage() {
+	echo "usage: $(basename ${0}) [-a] [-r] [-l] [filter]"			>&2
+}
+
+function show_help() {
+	show_usage
+	cat <<EOF>&2
+
+If no arguments are specified an interactive search is displayed to allow
+selecting a bookmark. An optional filter string can be used to show only
+bookmarks which are matching the pattern. When there is only one possible match
+the interactive search is skipped and the matching bookmark is selected.
+
+  -a | --add [path]       adds the path to the bookmarks. If no path is
+                            specified the current working directory is used
+  -r | --remove [index]   removes the path at the specified index from the
+                            bookmarks. If no index is specified the current
+                            working directory is used as path
+  -l | --list             list bookmarks and their associated index
+  -? | --help             show this help
+
+EOF
 	exit 1
 }
 
@@ -116,7 +132,7 @@ case ${1} in
 		exit 0
 		;;
 	-h | --help )
-		usage
+		show_help
 		exit 0
 		;;
 	* )

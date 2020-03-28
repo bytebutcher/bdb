@@ -12,7 +12,7 @@ cat <<EOF > ~/.bdb.bash
 unalias bdb 2> /dev/null
 bdb() {
 	case "\${1}" in
-		-a | --add | -r | --remove | -l | --list | -h)
+		-a | --add | -r | --remove | -l | --list | -? | -h | --help )
 			bdb.sh \$@
 			;;
 		* )
