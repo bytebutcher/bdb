@@ -21,7 +21,7 @@ $ bdb 1
 
 ### Adding bookmarks
 
-The ```-a``` argument can be used to add a path as bookmark.
+The ```-a | --add``` argument can be used to add a path as bookmark.
 When no parameter is specified the current working directory will be used as bookmark.
 
 ```
@@ -33,7 +33,7 @@ $ bob -a
 
 ### Removing bookmarks
 
-The ```-r``` argument can be used to remove a path from the bookmarks.
+The ```-r | --remove``` argument can be used to remove a path from the bookmarks.
 The index parameter can be used to specify which bookmark to remove.
 When no parameter is specified the current working directory is used as path.
 
@@ -46,13 +46,17 @@ $ bdb -r
 
 ### Listing bookmarks
 
-To list all bookmarks (including their indices) use the ```-l``` argument.
+The ```-l | --list``` argument can be used to list all bookmarks (including their indices).
 
 ```
 $ bdb -l
 0   /usr/bin
 1   /some/path
 ```
+
+### Getting help
+
+If you want to see a brief description of all arguments and their usage use the ```-? | -h | --help``` argument.
 
 ## Installation
 
