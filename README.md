@@ -62,7 +62,7 @@ If you want to see a brief description of all arguments and their usage use the 
 
 To install ```bdb``` just execute following command:
 ```
-bash <(curl -s https://github.com/bytebutcher/bdb/install)
+bash <(curl -s https://raw.githubusercontent.com/bytebutcher/bdb/master/install)
 ```
 
 Since ```bdb``` requires ```fzf``` to work properly you also need to execute the following commands: 
