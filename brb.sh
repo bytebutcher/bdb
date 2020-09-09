@@ -1,7 +1,7 @@
 #!/bin/bash
 # ##################################################
 # NAME:
-#   bdb
+#   brb
 # DESCRIPTION:
 #   bash directory bookmarking
 # AUTHOR:
@@ -24,8 +24,9 @@ the interactive search is skipped and the matching bookmark is selected.
   -a | --add [path]       adds the path to the bookmarks. If no path is
                             specified the current working directory is used
   -r | --remove [index]   removes the path at the specified index from the
-                            bookmarks. If no index is specified the current
-                            working directory is used as path
+                            bookmarks. If no index is specified an interactive
+                            search is displayed to allow selecting a bookmark
+							to be removed.
   -l | --list             list bookmarks and their associated index
   -? | --help             show this help
 
@@ -97,7 +98,7 @@ function list_bookmarks () {
 }
 
 CURRENT_PATH=$(resolve_dir "${CWD}")
-BOOKMARK_PATH="${HOME}/.bdb/"
+BOOKMARK_PATH="${HOME}/.brb/"
 BOOKMARK_NAME="bookmarks"
 BOOKMARK_FILE="${BOOKMARK_PATH}${BOOKMARK_NAME}"
 
@@ -118,11 +119,11 @@ case ${1} in
 		exit 0
 		;;
 	-r | --remove)
-		if [ -n "${2}" ] ; then
+		if is_integer "${2}" ; then
 			index="${2}"
 			path=$(get_bookmark_by_index "${index}")
 		else
-			path="${CURRENT_PATH}"
+			path="$(cat "${BOOKMARK_FILE}" | fzf)"
 		fi
 		remove_bookmark "${path}"
 		exit 0
@@ -148,7 +149,7 @@ case ${1} in
 			else
 				# Let user search bookmark file using fzf when there are 
 				# multiple bookmarks defined
-		       		cat "${BOOKMARK_FILE}" | fzf
+				cat "${BOOKMARK_FILE}" | fzf
 			fi
 		elif is_integer "${1}" ; then
 			index="${1}"

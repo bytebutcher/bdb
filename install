@@ -1,40 +1,40 @@
 #!/bin/bash
-if ! [ -d ~/.bdb/ ] ; then
-	git clone https://github.com/bytebutcher/bdb ~/.bdb/
+if ! [ -d ~/.brb/ ] ; then
+	git clone https://github.com/bytebutcher/brb ~/.brb/
 fi
 
-if ! [ -f ~/.bdb/bdb.sh ] ; then
-	echo "ERROR: Installation of bdb failed!" >&2
+if ! [ -f ~/.brb/brb.sh ] ; then
+	echo "ERROR: Installation of brb failed!" >&2
 	exit 1
 fi
 
-cat <<EOF > ~/.bdb.bash
-unalias bdb 2> /dev/null
-bdb() {
+cat <<EOF > ~/.brb.bash
+unalias brb 2> /dev/null
+brb() {
 	case "\${1}" in
 		-a | --add | -r | --remove | -l | --list | -? | -h | --help )
-			bdb.sh \$@
+			brb.sh \$@
 			;;
 		* )
-			bookmark_location="\$(bdb.sh \$@)"
+			bookmark_location="\$(brb.sh \$@)"
 			if [[ \${?} -eq 0 ]] && [ -n "\${bookmark_location}" ] ; then
 				cd "\${bookmark_location}"
 			fi
 			;;
 	esac
 }
-export -f bdb > /dev/null
-export PATH=~/.bdb/:\${PATH}
+export -f brb > /dev/null
+export PATH=~/.brb/:\${PATH}
 EOF
 
-if ! [ -f ~/.bdb.bash ] ; then
-	echo "ERROR: Installation of bdb failed!" >&2
+if ! [ -f ~/.brb.bash ] ; then
+	echo "ERROR: Installation of brb failed!" >&2
 	exit 1
 fi
 
-result="$(grep "[ -f ~/.bdb.bash ] && source ~/.bdb.bash" ~/.bashrc)"
+result="$(grep "[ -f ~/.brb.bash ] && source ~/.brb.bash" ~/.bashrc)"
 if [ -z "${result}" ]  ; then
-	echo "[ -f ~/.bdb.bash ] && source ~/.bdb.bash" >> ~/.bashrc
+	echo "[ -f ~/.brb.bash ] && source ~/.brb.bash" >> ~/.bashrc
 fi
 
 echo "Finished. Restart your shell or reload config file."
