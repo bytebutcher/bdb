@@ -1,6 +1,20 @@
 # brb
 brb - bash right back - the directory bookmarking tool.
 
+## Setup
+
+To install ```brb``` just execute following command:
+```
+bash <(curl -s https://raw.githubusercontent.com/bytebutcher/brb/master/install)
+```
+
+Since ```brb``` requires ```fzf``` to work properly you also need to execute the following commands: 
+```
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+```
+If you like to know more about ```fzf``` check out the [documentation of fzf](https://github.com/junegunn/fzf).
+
 ## Usage
 
 ### Selecting bookmarks
@@ -57,17 +71,3 @@ $ brb -l
 ### Getting help
 
 If you want to see a brief description of all arguments and their usage use the ```-? | -h | --help``` argument.
-
-## Installation
-
-To install ```brb``` just execute following command:
-```
-bash <(curl -s https://raw.githubusercontent.com/bytebutcher/brb/master/install)
-```
-
-Since ```brb``` requires ```fzf``` to work properly you also need to execute the following commands: 
-```
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
-```
-If you like to know more about ```fzf``` check out the [documentation of fzf](https://github.com/junegunn/fzf).
